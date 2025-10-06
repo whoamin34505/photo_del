@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
 import os
-from PIL import Image
+from PIL import Image, ImageTk
 
 
 def main():
@@ -20,21 +20,28 @@ def main():
         r = os.path.splitext(file)[1]
         if (r=='.jpg' or r=='.png'):
             print(r)
+            print(file)
         try:
+            root = Tk()
+            root.title("file")
             img = Image.open(file)
             width, height = img.size
-            window = Tk()
-            window.title("Clean_photo")
-            window.geometry(f'{width}x{height}')
-            window.mainloop()
+            root.geometry(f'{width}x{height}')
+ 
+            canvas = Canvas(bg="white", width=width, height=height)
+            canvas.pack(anchor=CENTER, expand=1)
+ 
+            python_image = PhotoImage(file=file)
+ 
+            canvas.create_image(0, 0, anchor=NW, image=python_image)
+ 
+            root.mainloop()
         except FileNotFoundError:
             print("Файл не найден.")
         except Exception as e:
             print(f"Произошла ошибка: {e}")
 
-    window = Tk()
-    window.title("Clean_photo")
-    window.mainloop()
+    tk.mainloop()
 
 if __name__ == "__main__":
     main()
